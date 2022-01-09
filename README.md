@@ -9,3 +9,6 @@ Data imbalance is very common and ubiquitous in the real world. Certain target v
 
 For instance , it is shown a clarty dataset for place classification located at the upper left. If we observe the frequency of different categories from high to low we will find that the data distribution has a long tail based on the stored class index. Moreover , the majority class such as living room has more than a thousand samples. On the other side , for rare classes such as museum it is only about 10 samples.
 
+![image](https://user-images.githubusercontent.com/70148273/148698090-9acdea28-665d-4dbe-8f92-fcfa3c3b5f04.png)
+
+

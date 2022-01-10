@@ -11,6 +11,23 @@ For instance , it is shown a clarty dataset for place classification located at 
 
 ![image](https://user-images.githubusercontent.com/70148273/148698090-9acdea28-665d-4dbe-8f92-fcfa3c3b5f04.png)
 
+Many real world tasks may involve continuous and sometimes even infinite target values which corresponds the regression problem. For instance in region applications , one often needs to infer the age of different people based on their visual apparence. In addition , in medical applications we would like to infer different health metrics across the patient populations. These signals are also continuous and often have skew distribution across population.
+
+![image](https://user-images.githubusercontent.com/70148273/148816120-cb70175a-850d-45d9-a140-62d40587ebd4.png)
+
+Consider this graph whose x is continuous (age of people) and y is the number of samples per age. The number of observations for Age 1 equals to the number of observation for Age 2. However the main difference is that the Age 1 is in highly represented neighborhood where there are many samples while the Age 2 is in the weekly represented neighborhood where there are less number of samples. Therefore the one of the difference is that the equal number of examples does not mean equal balanceness in imbalance regression.
+
+![image](https://user-images.githubusercontent.com/70148273/148816942-48f3a0e6-b9d4-4e18-8a16-5247bd1e6662.png)
+
+Besides , different from classification problems in imbalanced regression , certain topic values may have no data at all. This challange also motivates the need for target extrapolation and interpolation for those regions without any data. This confirms another difference that, because of the continuity of the targets, it implies the potential for target extrapolation and interpolation.
+
+![image](https://user-images.githubusercontent.com/70148273/148817514-f997b172-ffee-43b5-8beb-4e27a372e763.png)
+
+The first solution is called Label Distribution Smoothing (LDS) which uses kernel density estimation to learn the effective imbalance in datasets that corresponds to continuous targets. The empirical label density does not capture the real imbalance. To verify, it is shown above that the error distribution of ResNET-50 model trained on this data. It turns out that the error does not correlate with empirical label density. Specifically the test error has a low negative pearson correlation.
+
+LDS leverages the idea from kernel density estimation it convolves a symmetric kernel with the empirical label density distribution. This process gives us a kernel smooth label density which accounts for the overlap in information of data samples of nearby labels. Then the resulting effective label density distribution turns out to correlate well . This demonstrates that the LDS captures the real imbalance that effects regression problems.
+
+
 ### Feature Distribution Smoothing (FDS)
 
 Second solution of imbalance data for regression is Feature Distribution Smoothing (FDS)

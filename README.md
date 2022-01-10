@@ -43,7 +43,10 @@ Moreover, FDS is performed by first estimating the statistics of each target bei
 
 After that, both estimated and smooth statistics calibrate the visual representation for each input sample and the whole pipeline of FDS can be added into deep networks as a calibration layer.
 
-![Screenshot 2022-01-10 083001](https://user-images.githubusercontent.com/79253076/148722011-1ec1f3e0-c65b-4eca-91c2-3da730729084.png)
+![Screenshot 2022-01-10 083302](https://user-images.githubusercontent.com/79253076/148722194-17e6fe54-4f4b-4163-97ee-56556e6329dd.png)
 
 Finally, to obtain more stable and accurate estimation of the feature statistics during training there is a momentum update of the running statistics across each epoch.
 
+Differences between with and without using FDS in the model as a calibration layer:
+
+![Screenshot 2022-01-10 083432](https://user-images.githubusercontent.com/79253076/148722294-ec5f1a14-4bfc-4eb1-9cd4-407960dcf6ba.png)

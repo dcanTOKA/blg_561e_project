@@ -63,7 +63,7 @@ parser.add_argument('--schedule', type=int, nargs='*', default=[60, 80], help='l
 parser.add_argument('--batch_size', type=int, default=256, help='batch size')
 parser.add_argument('--print_freq', type=int, default=10, help='logging frequency')
 parser.add_argument('--img_size', type=int, default=224, help='image size used in training')
-parser.add_argument('--workers', type=int, default=32, help='number of workers used in data loading')
+parser.add_argument('--workers', type=int, default=8, help='number of workers used in data loading')
 # checkpoints
 parser.add_argument('--resume', type=str, default='', help='checkpoint file path to resume training')
 parser.add_argument('--pretrained', type=str, default='', help='checkpoint file path to load backbone weights')
@@ -140,7 +140,7 @@ def main():
     model = resnet50(fds=args.fds, bucket_num=args.bucket_num, bucket_start=args.bucket_start,
                      start_update=args.start_update, start_smooth=args.start_smooth,
                      kernel=args.fds_kernel, ks=args.fds_ks, sigma=args.fds_sigma, momentum=args.fds_mmt)
-    model = torch.nn.DataParallel(model).cuda()
+    model = torch.nn.DataParallel(model)
 
     # evaluate only
     if args.evaluate:
@@ -245,8 +245,8 @@ def train(train_loader, model, optimizer, epoch):
     end = time.time()
     for idx, (inputs, targets, weights) in enumerate(train_loader):
         data_time.update(time.time() - end)
-        inputs, targets, weights = \
-            inputs.cuda(non_blocking=True), targets.cuda(non_blocking=True), weights.cuda(non_blocking=True)
+        #inputs, targets, weights = \
+        #    inputs.cuda(non_blocking=True), targets.cuda(non_blocking=True), weights.cuda(non_blocking=True)
         if args.fds:
             outputs, _ = model(inputs, targets, epoch)
         else:

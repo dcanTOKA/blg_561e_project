@@ -5,6 +5,7 @@ from PIL import Image
 from scipy.ndimage import convolve1d
 from torch.utils import data
 import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
 
 from utils import get_lds_kernel_window
 
@@ -76,6 +77,21 @@ class AgeDB(data.Dataset):
             smoothed_value = convolve1d(
                 np.asarray([v for _, v in value_dict.items()]), weights=lds_kernel_window, mode='constant')
             num_per_label = [smoothed_value[min(max_target - 1, int(label))] for label in labels]
+            
+            
+            # Plot smoothed efective label density of AGEDB and its kernel
+            num_per_label_range = np.arange(len(smoothed_value)) + 1
+            plt.style.use('ggplot')
+            fig=plt.figure(figsize=(16,6))
+            #plt.axes([0.05, 0.05, 2.0, 2.0])
+            plt.bar(num_per_label_range,smoothed_value)
+            plt.style.use('classic')
+            size_filter_range = len(lds_kernel_window)
+            filter_range = np.linspace(-int(size_filter_range/2),int(size_filter_range/2),size_filter_range)
+            plt.axes([0.7, 0.55, 0.15, 0.25])
+            plt.title(f"LDS: [{lds_kernel.upper()}] ({lds_ks}/{lds_sigma})")
+            plt.plot(filter_range,lds_kernel_window)
+            plt.show
 
         weights = [np.float32(1 / x) for x in num_per_label]
         scaling = len(weights) / np.sum(weights)

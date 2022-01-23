@@ -5,6 +5,7 @@ from scipy.signal.windows import triang
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import matplotlib.pyplot as mplt
 
 from utils import calibrate_mean_var
 
@@ -49,6 +50,15 @@ class FDS(nn.Module):
             kernel_window = list(map(laplace, np.arange(-half_ks, half_ks + 1))) / sum(map(laplace, np.arange(-half_ks, half_ks + 1)))
 
         print(f'Using FDS: [{kernel.upper()}] ({ks}/{sigma})')
+        
+        mplt.style.use('ggplot')
+        mplt.title(f'Kernel : [{kernel.upper()}] ({ks}/{sigma})')
+        size_filter_range = len(kernel_window)
+        filter_range = np.linspace(-int(size_filter_range/2),int(size_filter_range/2),size_filter_range)
+        mplt.plot(filter_range, kernel_window)
+        fig=mplt.figure(figsize=(3,3))
+        mplt.show()
+        
         return torch.tensor(kernel_window, dtype=torch.float32)
 
     def _update_last_epoch_stats(self):
@@ -141,4 +151,9 @@ class FDS(nn.Module):
                     self.running_var_last_epoch[int(label - self.bucket_start)],
                     self.smoothed_mean_last_epoch[int(label - self.bucket_start)],
                     self.smoothed_var_last_epoch[int(label - self.bucket_start)])
+            #mplt.style.use('ggplot')
+            #fig=mplt.figure(figsize=(16,6))
+
+            #mplt.hist(ages, bins = 100, edgecolor = 'black')
+            #mplt.show()
         return features
